@@ -7,6 +7,7 @@ running = True
 dt = 0
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+mouse_pos = pygame.mouse.get_pos()
 
 while running:
 
@@ -17,7 +18,9 @@ while running:
     screen.fill("purple")
 
     pygame.draw.circle(screen, "red", player_pos, 40)
-
+    pygame.draw.circle(screen, "blue", mouse_pos, 20)
+    pygame.draw.line(screen, "black",mouse_pos,player_pos)
+    mouse_pos = pygame.mouse.get_pos()
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
         player_pos.y -= 300 * dt
