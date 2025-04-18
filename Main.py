@@ -19,7 +19,7 @@ while running:
 
     pygame.draw.circle(screen, "red", player_pos, 40)
     pygame.draw.circle(screen, "blue", mouse_pos, 20)
-    pygame.draw.line(screen, "black",mouse_pos,player_pos)
+    pygame.draw.aaline(screen, "black",mouse_pos,player_pos)
     mouse_pos = pygame.mouse.get_pos()
     keys = pygame.key.get_pressed()
     if keys[pygame.K_w]:
