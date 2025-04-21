@@ -1,5 +1,7 @@
 import pygame
-import button # A file that contains how the buttons were made
+import button  # A file that contains how the buttons were made
+import volume_slider  # Import the volume slider
+import brightness_slider  # Import the brightness slider
 
 pygame.init()
 
@@ -15,7 +17,7 @@ def mouse_release():
 # Background music
 pygame.mixer.init()
 pygame.mixer.music.load('Final Frontier.mp3')
-pygame.mixer.music.set_volume(0.8)
+pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
 
 # Button sound effects
@@ -29,6 +31,8 @@ windowSize = (1920, 1080)
 screen = pygame.display.set_mode(windowSize)
 
 white = (255, 255, 255)
+black = (0, 0, 0)
+gray = (76,187,23)
 
 menu_state = "main"
 
@@ -46,7 +50,7 @@ start_img = pygame.image.load('startBtn.png').convert_alpha()
 about_img = pygame.image.load('aboutBtn.png').convert_alpha()
 help_img = pygame.image.load('helpBtn.png').convert_alpha()
 credits_img = pygame.image.load('creditsBtn.png').convert_alpha()
-option_img = pygame.image.load('optionBtn.png').convert_alpha()
+settings_img = pygame.image.load('settingsBtn.png').convert_alpha()
 exit_img = pygame.image.load('exitBtn.png').convert_alpha()
 back_img = pygame.image.load('backBtn.png').convert_alpha()
 
@@ -55,26 +59,31 @@ hover_start_img = pygame.image.load('startBtn2.png').convert_alpha()
 hover_about_img = pygame.image.load('aboutBtn2.png').convert_alpha()
 hover_help_img = pygame.image.load('helpBtn2.png').convert_alpha()
 hover_credits_img = pygame.image.load('creditsBtn2.png').convert_alpha()
-hover_option_img = pygame.image.load('optionBtn2.png').convert_alpha()
+hover_settings_img = pygame.image.load('settingsBtn2.png').convert_alpha()
 hover_exit_img = pygame.image.load('exitBtn2.png').convert_alpha()
 hover_back_img = pygame.image.load('backBtn2.png').convert_alpha()
-
 
 # Create Button Instances
 startBtn = button.Button(875 + x_offset, 441 + y_offset, start_img, hover_start_img, 0.8, click_sound)
 aboutBtn = button.Button(863 + x_offset, 546 + y_offset, about_img, hover_about_img, 0.8, click_sound)
 helpBtn = button.Button(795 + x_offset, 652 + y_offset, help_img, hover_help_img, 0.8, click_sound)
 creditBtn = button.Button(860 + x_offset, 758 + y_offset, credits_img, hover_credits_img, 0.8, click_sound)
-optionBtn = button.Button(860 + x_offset, 864 + y_offset, option_img, hover_option_img, 0.8, click_sound)
+settingsBtn = button.Button(860 + x_offset, 864 + y_offset, settings_img, hover_settings_img, 0.8, click_sound)
 exitBtn = button.Button(900 + x_offset, 970 + y_offset, exit_img, hover_exit_img, 0.8, alt_click_sound)
 backBtn = button.Button(900 + x_offset, 970 + y_offset, back_img, hover_back_img, 0.8, alt_click_sound)
 
-# Font and size of text
+# Volume Slider Instance
+volumeSlider = volume_slider.VolumeSlider(800 + x_offset, 600 + y_offset, 300, 20, pygame.mixer.music.get_volume())
 
+# Brightness Slider Instance (lowered for spacing)
+brightnessSlider = brightness_slider.BrightnessSlider(800 + x_offset, 750 + y_offset, 300, 20, 1.0)
+
+# Font and size of text
 aboutInfo = pygame.font.SysFont(None, 40)
 creditsInfo = pygame.font.SysFont(None, 50)
+labelFont = pygame.font.SysFont(None, 40)
 
-bg_og = pygame.image.load("zombie_bg.png").convert()
+bg_og = pygame.image.load("ruins2.png").convert()
 bg1 = pygame.transform.scale(bg_og, (1920, 1080))
 scaleTitle = pygame.transform.scale(mainTitle, (900, 200))
 
@@ -93,8 +102,8 @@ while running:
             menu_state = "help"
         if creditBtn.draw(screen):
             menu_state = "credits"
-        if optionBtn.draw(screen):
-            menu_state = "option"
+        if settingsBtn.draw(screen):
+            menu_state = "settings"
         if exitBtn.draw(screen):
             mouse_release()
             running = False
@@ -114,9 +123,9 @@ while running:
         ]
 
         line_spacing = 10
-        rendered_lines = [aboutInfo.render(line, True, white) for line in lines]
+        rendered_lines = [aboutInfo.render(line, True, black) for line in lines]
         total_height = sum(text.get_height() + line_spacing for text in rendered_lines) - line_spacing
-        start_y = (screen_height - total_height) // 2 - 30
+        start_y = (screen_height - total_height) // 2 + 40
 
         for text_surface in rendered_lines:
             text_rect = text_surface.get_rect(center=(screen_width // 2, start_y))
@@ -124,7 +133,7 @@ while running:
             start_y += text_surface.get_height() + line_spacing
 
         aboutTitle = pygame.font.Font(None, 60)
-        aboutRender = aboutTitle.render("About", False, white)
+        aboutRender = aboutTitle.render("About", False, black)
         screen.blit(aboutRender, (890, 285))
 
     if menu_state == "help":
@@ -133,31 +142,33 @@ while running:
             mouse_release()
 
         helpTitle = pygame.font.Font(None, 60)
-        helpRender = helpTitle.render("How to Play", False, white)
-        screen.blit(helpRender, (880, 285))
-
+        helpRender = helpTitle.render("How to Play", False, black)
+        screen.blit(helpRender, (844, 285))
 
         lines = [
-            "W – move forward",
-            "A – move left",
-            "S – move backwards",
-            "D – move right",
-            "Mouse – move the cursor around and",
+            "",
+            "Keyboard:",
+            "- W: move forward",
+            "- A: move left",
+            "- S: move backwards",
+            "- D: move right",
+            "",
+            "Mouse:",
+            "- (Left-Click): move the cursor around and",
             "       click on each zombie to kill them",
             "",
-            "Collect medkits to gain some health back."
+            "Collect medkits to gain back health."
         ]
 
         line_spacing = 15
-        rendered_lines = [aboutInfo.render(line, True, white) for line in lines]
+        rendered_lines = [aboutInfo.render(line, True, black) for line in lines]
         total_height = sum(text.get_height() + line_spacing for text in rendered_lines) - line_spacing
-        start_y = (screen_height - total_height) // 2 - 30
+        start_y = (screen_height - total_height) // 2 + 50
 
         for text_surface in rendered_lines:
             text_rect = text_surface.get_rect(center=(screen_width // 2, start_y))
             screen.blit(text_surface, text_rect)
             start_y += text_surface.get_height() + line_spacing
-
 
     if menu_state == "credits":
         if backBtn.draw(screen):
@@ -167,12 +178,12 @@ while running:
             "Megan Sierra",
             "Lucas Powell",
             "Kev Stolz",
-            "Olani F",
+            "Olani Francis",
             "Sirawdink Wakalto",
         ]
 
         line_spacing = 40
-        rendered_lines = [creditsInfo.render(line, True, white) for line in lines]
+        rendered_lines = [creditsInfo.render(line, True, black) for line in lines]
         total_height = sum(text.get_height() + line_spacing for text in rendered_lines) - line_spacing
         start_y = (screen_height - total_height) // 2 - 30
 
@@ -182,8 +193,35 @@ while running:
             start_y += text_surface.get_height() + line_spacing
 
         creditsTitle = pygame.font.Font(None, 55)
-        creditsRender = creditsTitle.render("Credits", False, white)
+        creditsRender = creditsTitle.render("Credits", False, black)
         screen.blit(creditsRender, (890, 200))
+
+    if menu_state == "settings":
+        if backBtn.draw(screen):
+            menu_state = "main"
+            mouse_release()
+
+        settingsTitle = pygame.font.Font(None, 55)
+        settingsRender = settingsTitle.render("Settings", False, black)
+        screen.blit(settingsRender, (890, 200))
+
+        # Draw volume slider
+        volumeSlider.draw(screen)
+
+        # Volume label
+        volume_label = labelFont.render("Volume", True, black)
+        screen.blit(volume_label, (volumeSlider.rect.x, volumeSlider.rect.y - 35))
+
+        # Draw brightness slider
+        brightnessSlider.draw(screen)
+
+        # Brightness label
+        brightness_label = labelFont.render("Brightness", True, black)
+        screen.blit(brightness_label, (brightnessSlider.rect.x, brightnessSlider.rect.y - 35))
+
+        settingsTitle = pygame.font.Font(None, 55)
+        settingsRender = settingsTitle.render("Settings", False, black)
+        screen.blit(settingsRender, (890, 200))
 
     # Event handler
     for event in pygame.event.get():
@@ -192,10 +230,16 @@ while running:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             running = False
 
-    if menu_state == "option":
-        if backBtn.draw(screen):
-            menu_state = "main"
-            mouse_release()
+        if menu_state == "settings":
+            volumeSlider.handle_event(event)
+            brightnessSlider.handle_event(event)
+
+    brightness = brightnessSlider.get_brightness()
+    if brightness < 1.0:
+        overlay = pygame.Surface((1920, 1080))
+        overlay.set_alpha(int((1.0 - brightness) * 255))  # 0 = full bright, 255 = dark
+        overlay.fill((0, 0, 0))
+        screen.blit(overlay, (x_offset, y_offset))
 
     pygame.display.update()
 
