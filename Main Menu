@@ -30,6 +30,7 @@ alt_click_sound.set_volume(0.4)
 windowSize = (1920, 1080)
 screen = pygame.display.set_mode(windowSize)
 
+# Colors
 white = (255, 255, 255)
 black = (0, 0, 0)
 gray = (76,187,23)
@@ -83,10 +84,12 @@ aboutInfo = pygame.font.SysFont(None, 40)
 creditsInfo = pygame.font.SysFont(None, 50)
 labelFont = pygame.font.SysFont(None, 40)
 
+# Background image and Location of Main Title
 bg_og = pygame.image.load("ruins2.png").convert()
 bg1 = pygame.transform.scale(bg_og, (1920, 1080))
 scaleTitle = pygame.transform.scale(mainTitle, (900, 200))
 
+# Making the menu functional
 running = True
 while running:
     screen.blit(bg1, (x_offset, y_offset))  # Background aligned to offset
@@ -132,6 +135,7 @@ while running:
             screen.blit(text_surface, text_rect)
             start_y += text_surface.get_height() + line_spacing
 
+        # About Title
         aboutTitle = pygame.font.Font(None, 60)
         aboutRender = aboutTitle.render("About", False, black)
         screen.blit(aboutRender, (890, 285))
@@ -141,6 +145,7 @@ while running:
             menu_state = "main"
             mouse_release()
 
+        # Help Title
         helpTitle = pygame.font.Font(None, 60)
         helpRender = helpTitle.render("How to Play", False, black)
         screen.blit(helpRender, (844, 285))
@@ -180,10 +185,14 @@ while running:
             "Kev Stolz",
             "Olani Francis",
             "Sirawdink Wakalto",
+            "",
+            "Background Image: unsplash.com",
+            "Music: soundtaxi.com",
+            "Sound effects from: https://pocket-se.info/ (Pocket Sound)"
         ]
 
-        line_spacing = 40
-        rendered_lines = [creditsInfo.render(line, True, black) for line in lines]
+        line_spacing = 15
+        rendered_lines = [creditsInfo.render(line, False, black) for line in lines]
         total_height = sum(text.get_height() + line_spacing for text in rendered_lines) - line_spacing
         start_y = (screen_height - total_height) // 2 - 30
 
@@ -192,6 +201,7 @@ while running:
             screen.blit(text_surface, text_rect)
             start_y += text_surface.get_height() + line_spacing
 
+        # Credits Title
         creditsTitle = pygame.font.Font(None, 55)
         creditsRender = creditsTitle.render("Credits", False, black)
         screen.blit(creditsRender, (890, 200))
