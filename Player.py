@@ -6,13 +6,14 @@ import math
 class player:
     def __init__(self):
         self.speed = Config.PLAYER_SPEED
-        self.sprite = pygame.image.load(Config.PLAYER_IMAGE_PATH)
-        self.rect = self.sprite.get_rect(center=(Config.WIDTH // 2, Config.HEIGHT - 65))
+        self.sprite = pygame.image.load(Config.PLAYER_IMAGE_PATH).convert_alpha()
+        self.sprite = pygame.transform.scale(self.sprite, (100,100))
+        self.rect = self.sprite.get_rect(center=(Config.WIDTH // 2, Config.HEIGHT // 2 ))
         self.health = Config.PLAYER_HEALTH
         self.deadSound = pygame.mixer.Sound(Config.PLAYER_DEATH_SOUND_PATH)
     def Movement(self, keys):
         dx, dy = 0, 0
-        #fixed stafing being faster than normal movement
+        #fixed strafing being faster than normal movement
         if keys[pygame.K_a] and self.rect.left > 0:
             dx = -self.speed
         if keys[pygame.K_d] and self.rect.right < Config.WIDTH:
