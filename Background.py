@@ -1,6 +1,6 @@
 import pygame
 import Config
-class background:
+class Background:
     def __init__(self):
         self.texture = pygame.image.load(Config.GRASS_IMAGE_PATH)
         self.texture = pygame.transform.scale(self.texture,(100,100))
