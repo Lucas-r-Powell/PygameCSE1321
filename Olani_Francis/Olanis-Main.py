@@ -1,6 +1,6 @@
 import pygame
 import Config
-from player import player
+from Player import player
 from Weapons import Weapons
 from Medkit import Medkit
 from HeartBar import HeartBar
