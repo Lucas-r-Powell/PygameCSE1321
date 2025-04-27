@@ -18,7 +18,6 @@ class player:
 
     def Movement(self, keys):
         dx, dy = 0, 0
-        #fixed strafing being faster than normal movement
         if keys[pygame.K_a] and self.rect.left > 0:
             dx = -self.speed
         if keys[pygame.K_d] and self.rect.right < Config.WIDTH:

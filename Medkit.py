@@ -25,9 +25,7 @@ class Medkit(pygame.sprite.Sprite):
             random.randint(padding_x, 1280 - int(hitbox_width) - padding_x),
             random.randint(padding_y, 720 - int(hitbox_height) - padding_y)
         )
-
         self.heal_amount = 4
-        print(f"Medkit spawned at: {self.rect.topleft}")
 
     def collision(self, player):
         if player.rect.colliderect(self.rect):
