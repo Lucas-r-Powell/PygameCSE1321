@@ -1,9 +1,5 @@
 import pygame
 import random
-from Player import player
-from HeartBar import HeartBar
-
-
 
 class Medkit(pygame.sprite.Sprite):
     def __init__(self):
