@@ -185,7 +185,6 @@ while running:
         lines = [
             "Megan Sierra",
             "Lucas Powell",
-            "Kev Stolz",
             "Olani Francis",
             "Sirawdink Wakalto",
             "",
