@@ -39,7 +39,6 @@ class Weapons:
             else:
                 self.emptysound.play()
                 self.noammo = True
-                pass
 
     def reload(self, time):
         if self.ammo["shotgun"] == Config.MAXWEAPONAMMO["shotgun"]:
@@ -53,10 +52,8 @@ class Weapons:
         else:
             self.reloading = False
 
-    def draw(self, surface, playerpos):
-        surface.blit(self.sprite, playerpos)
-    def drop(self):
-        pass
 
-    def pickup(self):
-        pass
+    def draw(self, screen, player_topright, rotation_angle):
+        rotated_image = pygame.transform.rotate(self.sprite, -rotation_angle - 90)
+        new_rect = rotated_image.get_rect(center=player_topright)
+        screen.blit(rotated_image, new_rect)

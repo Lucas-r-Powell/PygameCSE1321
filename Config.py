@@ -1,9 +1,9 @@
 #settings
 import pygame
 
-DEBUG = True
+DEBUG = False
 
-WIDTH, HEIGHT = 1280, 720
+WIDTH, HEIGHT = 1920, 1080
 #background
 GRASS_IMAGE_PATH = "game-images/Grasstexture.jpg"
 TREE_IMAGE_PATH = "game-images/tree.png"
@@ -60,24 +60,15 @@ WEAPONFX = {
 }
 
 WEAPONAMMO = {
-    "Knife": -1,
-    "shotgun": 6,
-    "Rifle": 30,
-    "Sniper": 12
+    "shotgun": 6
 }
 
 MAXWEAPONAMMO = {
-    "Knife": -1,
-    "shotgun": 6,
-    "Rifle": 30,
-    "Sniper": 12
+    "shotgun": 6
 }
 
 TIMETORELOAD = {
-    "Knife": 0,
-    "shotgun": 2000,
-    "Rifle": 3000,
-    "Sniper": 3000
+    "shotgun": 2000
 }
 
 IFRAMES = 500

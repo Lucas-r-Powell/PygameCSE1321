@@ -18,7 +18,6 @@ class player:
 
     def Movement(self, keys):
         dx, dy = 0, 0
-        #fixed strafing being faster than normal movement
         if keys[pygame.K_a] and self.rect.left > 0:
             dx = -self.speed
         if keys[pygame.K_d] and self.rect.right < Config.WIDTH:
@@ -42,13 +41,26 @@ class player:
     def Gain_health(self,heal):
         self.health = min(self.health + heal, 10)
         heartbar.update_health(self.health)
-        print(f"player hp {self.health}")
 
     def followcursor(self, mousepos):
         dx, dy = mousepos[0] - self.rect.centerx, mousepos[1] - self.rect.centery
         angle = math.degrees(math.atan2(-dy, dx))
         self.sprite = pygame.transform.rotate(self.initalsprite, angle - 90)
         self.rect = self.sprite.get_rect(center=self.rect.center)
+    
+    def get_rotation_angle(self, mouse_pos):
+        dx, dy = mouse_pos[0] - self.rect.centerx, mouse_pos[1] - self.rect.centery
+        angle = math.degrees(math.atan2(dy, dx))
+        return angle
+    
+    def get_weapon_position(self,rotation_angle):
+        offset_x = self.rect.width // 2
+        offset_y = -self.rect.height // 4
+        rad_angle = math.radians(rotation_angle)
+        weapon_x = self.rect.centerx + offset_x * math.cos(rad_angle) - offset_y * math.sin(rad_angle)
+        weapon_y = self.rect.centery + offset_x * math.sin(rad_angle) + offset_y * math.cos(rad_angle)
+        return (weapon_x, weapon_y)
+
 
     def draw(self, surface):
         surface.blit(self.sprite, self.rect)

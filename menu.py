@@ -1,7 +1,9 @@
 import pygame
+import Config
 import button  # A file that contains how the buttons were made
 import volume_slider  # Import the volume slider
-import brightness_slider  # Import the brightness slider
+import brightness_slider # Import the brightness slider
+import Main
 
 pygame.init()
 
@@ -16,18 +18,18 @@ def mouse_release():
 
 # Background music
 pygame.mixer.init()
-pygame.mixer.music.load('Final Frontier.mp3')
+pygame.mixer.music.load('game-sounds/Final Frontier.mp3')
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
 
 # Button sound effects
-click_sound = pygame.mixer.Sound('enter18.mp3')
+click_sound = pygame.mixer.Sound('game-sounds/enter18.mp3')
 click_sound.set_volume(0.4)
-alt_click_sound = pygame.mixer.Sound('cancel9.mp3')
+alt_click_sound = pygame.mixer.Sound('game-sounds/cancel9.mp3')
 alt_click_sound.set_volume(0.4)
 
 # Display Size
-windowSize = (1920, 1080)
+windowSize = (Config.WIDTH, Config.HEIGHT)
 screen = pygame.display.set_mode(windowSize)
 
 # Colors
@@ -44,25 +46,25 @@ x_offset = (screen_width - 1920) // 2
 y_offset = (screen_height - 1080) // 2
 
 # Title image
-mainTitle = pygame.image.load('zombie title.png').convert_alpha()
+mainTitle = pygame.image.load('game-images/zombie title.png').convert_alpha()
 
 # Load Current Image Buttons
-start_img = pygame.image.load('startBtn.png').convert_alpha()
-about_img = pygame.image.load('aboutBtn.png').convert_alpha()
-help_img = pygame.image.load('helpBtn.png').convert_alpha()
-credits_img = pygame.image.load('creditsBtn.png').convert_alpha()
-settings_img = pygame.image.load('settingsBtn.png').convert_alpha()
-exit_img = pygame.image.load('exitBtn.png').convert_alpha()
-back_img = pygame.image.load('backBtn.png').convert_alpha()
+start_img = pygame.image.load('game-images/startBtn.png').convert_alpha()
+about_img = pygame.image.load('game-images/aboutBtn.png').convert_alpha()
+help_img = pygame.image.load('game-images/helpBtn.png').convert_alpha()
+credits_img = pygame.image.load('game-images/creditsBtn.png').convert_alpha()
+settings_img = pygame.image.load('game-images/settingsBtn.png').convert_alpha()
+exit_img = pygame.image.load('game-images/exitBtn.png').convert_alpha()
+back_img = pygame.image.load('game-images/backBtn.png').convert_alpha()
 
 # Upload Hover Button Image Buttons
-hover_start_img = pygame.image.load('startBtn2.png').convert_alpha()
-hover_about_img = pygame.image.load('aboutBtn2.png').convert_alpha()
-hover_help_img = pygame.image.load('helpBtn2.png').convert_alpha()
-hover_credits_img = pygame.image.load('creditsBtn2.png').convert_alpha()
-hover_settings_img = pygame.image.load('settingsBtn2.png').convert_alpha()
-hover_exit_img = pygame.image.load('exitBtn2.png').convert_alpha()
-hover_back_img = pygame.image.load('backBtn2.png').convert_alpha()
+hover_start_img = pygame.image.load('game-images/startBtn2.png').convert_alpha()
+hover_about_img = pygame.image.load('game-images/aboutBtn2.png').convert_alpha()
+hover_help_img = pygame.image.load('game-images/helpBtn2.png').convert_alpha()
+hover_credits_img = pygame.image.load('game-images/creditsBtn2.png').convert_alpha()
+hover_settings_img = pygame.image.load('game-images/settingsBtn2.png').convert_alpha()
+hover_exit_img = pygame.image.load('game-images/exitBtn2.png').convert_alpha()
+hover_back_img = pygame.image.load('game-images/backBtn2.png').convert_alpha()
 
 # Create Button Instances
 startBtn = button.Button(875 + x_offset, 441 + y_offset, start_img, hover_start_img, 0.8, click_sound)
@@ -85,7 +87,7 @@ creditsInfo = pygame.font.SysFont(None, 50)
 labelFont = pygame.font.SysFont(None, 40)
 
 # Background image and Location of Main Title
-bg_og = pygame.image.load("ruins2.png").convert()
+bg_og = pygame.image.load("game-images/ruins2.png").convert()
 bg1 = pygame.transform.scale(bg_og, (1920, 1080))
 scaleTitle = pygame.transform.scale(mainTitle, (900, 200))
 
@@ -98,7 +100,7 @@ while running:
     if menu_state == "main":
         screen.blit(scaleTitle, (500, 200))
         if startBtn.draw(screen):
-            print("start")
+            Main.start_game() 
         if aboutBtn.draw(screen):
             menu_state = "about"
         if helpBtn.draw(screen):
@@ -118,7 +120,7 @@ while running:
             mouse_release()
         lines = [
             "Collect the items on the map to use against the zombies to kill them.",
-            "Every round, the number of zombies will increase by 5.",
+            "Every round, the number of zombies will increase by the round number each round.",
             "Use the healing potions/medicine will regenerate",
             "your health so you can keep playing without being on the verge of death.",
             "Make it to round 5, and you win the game.",
@@ -157,6 +159,7 @@ while running:
             "- A: move left",
             "- S: move backwards",
             "- D: move right",
+            "- R: reload Weapon"
             "",
             "Mouse:",
             "- (Left-Click): move the cursor around and",
@@ -188,7 +191,8 @@ while running:
             "",
             "Background Image: unsplash.com",
             "Music: soundtaxi.com",
-            "Sound effects from: https://pocket-se.info/ (Pocket Sound)"
+            "Sound effects from: https://pocket-se.info/ (Pocket Sound)",
+            "Extra sound effects : https://pixabay.com/"
         ]
 
         line_spacing = 15
