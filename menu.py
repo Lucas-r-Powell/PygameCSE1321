@@ -191,7 +191,8 @@ while running:
             "",
             "Background Image: unsplash.com",
             "Music: soundtaxi.com",
-            "Sound effects from: https://pocket-se.info/ (Pocket Sound)"
+            "Sound effects from: https://pocket-se.info/ (Pocket Sound)",
+            "Extra sound effects : https://pixabay.com/"
         ]
 
         line_spacing = 15
