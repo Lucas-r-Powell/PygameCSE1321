@@ -29,7 +29,7 @@ alt_click_sound = pygame.mixer.Sound('game-sounds/cancel9.mp3')
 alt_click_sound.set_volume(0.4)
 
 # Display Size
-windowSize = (1920, 1080)
+windowSize = (Config.WIDTH, Config.HEIGHT)
 screen = pygame.display.set_mode(windowSize)
 
 # Colors
@@ -120,7 +120,7 @@ while running:
             mouse_release()
         lines = [
             "Collect the items on the map to use against the zombies to kill them.",
-            "Every round, the number of zombies will increase by 5.",
+            "Every round, the number of zombies will increase by the round number each round.",
             "Use the healing potions/medicine will regenerate",
             "your health so you can keep playing without being on the verge of death.",
             "Make it to round 5, and you win the game.",
@@ -159,6 +159,7 @@ while running:
             "- A: move left",
             "- S: move backwards",
             "- D: move right",
+            "- R: reload Weapon"
             "",
             "Mouse:",
             "- (Left-Click): move the cursor around and",

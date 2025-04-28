@@ -1,6 +1,7 @@
 import pygame
 import Config
 import random
+import button
 from Player import player
 from Weapons import Weapons
 from Background import Background
@@ -23,6 +24,11 @@ font = pygame.font.Font(None, 74)
 lose_text = font.render("You Lost!", True, "white")
 win_text = font.render("You Win!", True, "white")
 lose_text_rect = lose_text.get_rect(center=(Config.WIDTH // 2, Config.HEIGHT // 2))
+exit_img = pygame.image.load("game-images/exitBtn.png").convert_alpha()
+hover_exit_img = pygame.image.load("game-images/exitBtn2.png").convert_alpha()
+alt_click_sound = pygame.mixer.Sound('game-sounds/cancel9.mp3')
+alt_click_sound.set_volume(0.4)
+exitBtn = button.Button(900, 970, exit_img, hover_exit_img, 0.8, alt_click_sound)
 player_instance = player()
 weapon = Weapons()
 background = Background()
@@ -42,15 +48,20 @@ medkits = pygame.sprite.Group()
 medkits.add(medkit)
 global_medkit_count = 1
 
+
+crosshair_surface = pygame.Surface((40, 40), pygame.SRCALPHA)
+crosshair_surface.set_alpha(128)
+
+
 def start_game():
     global running, dt, show_FPS, player_win, player_loss, HUD_font, mouse_pos, font, lose_text, win_text, lose_text_rect
     global player_instance, weapon, background, heartbar, Zombies, global_zombie_count, global_zombies_spawned, global_kill_count, global_round_count, medkits, global_medkit_count
 
     while running:
         mouse_pos = pygame.mouse.get_pos()
-        handle_events(player_instance, weapon, Zombies, medkits, heartbar)
+        handle_events(player_instance, weapon, Zombies, medkits)
         update_game_state(player_instance, Zombies, medkits, heartbar)
-        draw_game(screen, background, player_instance, weapon, heartbar, medkits, Zombies, HUD_font, font, lose_text_rect, show_FPS, clock, global_round_count, global_kill_count, player_win, player_loss)
+        draw_game(screen, background, player_instance, weapon, heartbar, medkits, Zombies, HUD_font, show_FPS, clock, global_round_count, global_kill_count, player_win, player_loss)
         dt = clock.tick(60) / 1000
 
     pygame.quit()
@@ -133,13 +144,28 @@ def update_game_state(player_instance, Zombies, medkits, heartbar):
             player_instance.Lose_health(Config.ZOMBIE_DAMAGE, pygame.time.get_ticks(), zombie_instance.IFrames)
             heartbar.update_health(player_instance.health)
 
-def draw_game(screen, background, player_instance, weapon, heartbar, medkits, Zombies, HUD_font, font, lose_text_rect, show_FPS, clock, global_round_count, global_kill_count, player_win, player_loss):
+def win_lose_event():
+    if player_win:
+        screen.blit(win_text, lose_text_rect)
+        if exitBtn.draw(screen):
+            pygame.quit()
+            exit()
+    elif player_loss:
+        screen.blit(lose_text, lose_text_rect)
+        if exitBtn.draw(screen):
+            pygame.quit()
+            exit()
+
+def draw_game(screen, background, player_instance, weapon, heartbar, medkits, Zombies, HUD_font,show_FPS, clock, global_round_count, global_kill_count, player_win, player_loss):
+    pygame.mouse.set_visible(False)
     screen.fill("purple")
     background.draw_pattern(screen)
     player_instance.draw(screen)
-    weapon.draw(screen, player_instance.rect.topright)
-    pygame.draw.aaline(screen, "black", pygame.mouse.get_pos(), player_instance.rect.center)
-    pygame.draw.circle(screen, "blue", pygame.mouse.get_pos(), 20)
+    rotation_angle = player_instance.get_rotation_angle(pygame.mouse.get_pos())
+    weapon_position = player_instance.get_weapon_position(rotation_angle)
+    weapon.draw(screen, weapon_position,rotation_angle)
+    pygame.draw.circle(crosshair_surface, (128, 128, 128), (20, 20), 20)
+    screen.blit(crosshair_surface, (pygame.mouse.get_pos()[0] - 20, pygame.mouse.get_pos()[1] - 20))
     heartbar.draw(screen)
     medkits.draw(screen)
     Zombies.draw(screen)
@@ -153,10 +179,7 @@ def draw_game(screen, background, player_instance, weapon, heartbar, medkits, Zo
     screen.blit(kill_counter, (Config.WIDTH - 125, Config.HEIGHT - 100))
     screen.blit(round_counter, (Config.WIDTH - 125, Config.HEIGHT - 75))
     screen.blit(ammo_counter, (Config.WIDTH - 125, Config.HEIGHT - 50))
-    if player_win:
-        screen.blit(win_text, lose_text_rect)
-    elif player_loss:
-        screen.blit(lose_text, lose_text_rect)
+    win_lose_event()
     debug.stats(screen, HUD_font, global_zombies_spawned, global_zombie_count)
     pygame.display.flip()
 

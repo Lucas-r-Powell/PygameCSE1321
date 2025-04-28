@@ -1,7 +1,7 @@
 #settings
 import pygame
 
-DEBUG = True
+DEBUG = False
 
 WIDTH, HEIGHT = 1920, 1080
 #background
